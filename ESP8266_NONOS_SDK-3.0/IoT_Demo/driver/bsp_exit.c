@@ -25,7 +25,6 @@ void ICACHE_FLASH_ATTR bsp_exit_init(void)
     ETS_GPIO_INTR_ATTACH((ets_isr_t)EXTI_handle, (void *)520);//设置中断回调函数
     gpio_pin_intr_state_set(GPIO_ID_PIN(4),GPIO_PIN_INTR_NEGEDGE);//设置引脚中断触发方式
     ETS_GPIO_INTR_ENABLE();                             //使能外部触发中断
-
 }
 
 

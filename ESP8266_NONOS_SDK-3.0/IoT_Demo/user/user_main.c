@@ -22,9 +22,12 @@ void  udp_Soft_Timer_Handle(void * reg)
         //获取AP模式下参数
         My_Get_softap_Status(0);
         //创建udp连接
-        Create_Udp_connect();
-
-        bsp_Soft_Timer_close(&udp_start_os_timer);
+        //Create_Udp_Connect_Server(1314);
+        //Create_Udp_Connect_Client("192.168.4.2",8888);
+        //Send_Wifi_Data("hello i am yuan\n");
+        //Create_Tcp_Connect_Server(1314);
+        Create_Tcp_Connect_Client("192.168.4.2",8888);
+        bsp_SoftTimer_close(&udp_start_os_timer);
     }
 }
 
@@ -36,24 +39,26 @@ void HW_Timer_INT(void)		// ②：硬件定时器中断回调函数
 
 void ICACHE_FLASH_ATTR user_init(void)
 {
+    //设置串口初始化
 	uart_init(115200,115200);
+    //打印sdk版本信息
     os_printf("SDK version:%s\n", system_get_sdk_version());
-
+    //led初始化
     bsp_led_init();
     
     //设置AP ,SAT, AP + SAT
     softap_station_scan(SOFTAP_MODE, 1);
-    //获取参数
+    //获取Ap模式下的参数信息
     My_Get_softap_Status(1);
-
     //设置AP模式下的参数
     My_Set_softap_Status("ILOVEYOU", "123456789", 1);
 
-    Led_Soft_Timer_init(&led_os_timer,Led_Soft_Timer_Handle,500);
-
-    bsp_Soft_Timer_init(&udp_start_os_timer,udp_Soft_Timer_Handle,1000,1314,1);
-
+    
+    //设置软件定时
+    Led_SoftTimer_init(&led_os_timer,Led_Soft_Timer_Handle,500);
+    bsp_SoftTimer_init(&udp_start_os_timer,udp_Soft_Timer_Handle,10000,1314,1);
 }
+
 
 
 
